@@ -5,19 +5,7 @@ Grafana with installed DevOpsProdigy KubeGraf (https://github.com/devopsprodigy/
 ### Installation
 
 
-1. Go to the plugins directory in Grafana:
-
-    `cd $GRAFANA_PATH/data/plugins`
-
-2. Copy the repository:
-
-    `git clone https://github.com/devopsprodigy/kubegraf  /var/lib/grafana/plugins` and restart grafana-server
-
-    or
-
-    `grafana-cli plugins install devopsprodigy-kubegraf-app` and restart grafana-server.
-
-3. Apply Kubernetes manifests from [kubernetes/](kubernetes/) directory to give
+1. Apply Kubernetes manifests from [kubernetes/](kubernetes/) directory to give
      required permissions to the user `grafana-kubegraf`:
       ```
       kubectl apply -f https://raw.githubusercontent.com/devopsprodigy/kubegraf/master/kubernetes/serviceaccount.yaml
@@ -26,7 +14,7 @@ Grafana with installed DevOpsProdigy KubeGraf (https://github.com/devopsprodigy/
       kubectl apply -f https://raw.githubusercontent.com/devopsprodigy/kubegraf/master/kubernetes/secret.yaml
       ```
 
-4. Create a `grafana-kubegraf` user private key and certificate on one of the
+2. Create a `grafana-kubegraf` user private key and certificate on one of the
       master nodes:
       ```
       openssl genrsa -out ~/grafana-kubegraf.key 2048
@@ -42,14 +30,14 @@ Grafana with installed DevOpsProdigy KubeGraf (https://github.com/devopsprodigy/
     kubectl get secret grafana-kubegraf-secret -o jsonpath={.data.token} | base64 -d
     ```
 
-5. Go to /configuration-plugins in Grafana and click on the plugin. Then click “enable”.
+3. Go to /configuration-plugins in Grafana and click on the plugin. Then click “enable”.
 
-6. Go to the plugin and select “create cluster”.
+4. Go to the plugin and select “create cluster”.
 
-7. Enter the settings of http-access to the Kubernetes api server:
+5. Enter the settings of http-access to the Kubernetes api server:
     * Kubernetes master's url from `kubectl cluster-info`
     * Enter the certificate and key from step #4  "TLS Client Auth" section
       Or
       The token from step #4 in "Bearer token access" section
 
-8. Open the “additional datasources” drop-down list and select the prometheus that is used in this cluster.
+6. Open the “additional datasources” drop-down list and select the prometheus that is used in this cluster.
