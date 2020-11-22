@@ -1,0 +1,89 @@
+    <div class="page-header">
+        <h1 ng-show="!ctrl.cluster.id">Add new cluster</h1>
+        <h1 ng-show="ctrl.cluster.id" ng-bind="ctrl.cluster.name"></h1>
+    </div>
+    <hr/>
+    <form name="clusterForm">
+        <div class="gf-form-group">
+            <div class="gf-form-inline">
+                <div class="gf-form">
+                    <span class="gf-form-label width-10">Name</span>
+                    <input class="gf-form-input width-20" type="text" ng-model="ctrl.cluster.name" placeholder="Enter your cluster's name" required/>
+                </div>
+            </div>
+        </div>
+
+        <datasource-http-settings ng-if="ctrl.pageReady"
+                current="ctrl.cluster"
+                suggest-url="https://localhost:8443">
+        </datasource-http-settings>
+
+        <div class="gf-form-group">
+            <h3 class="page-heading">Bearer token access</h3>
+
+            <div class="gf-form-inline">
+                <gf-form-checkbox
+                        ng-if="ctrl.version >= 6"
+                        class="gf-form"
+                        label="Access via token"
+                        checked="ctrl.cluster.jsonData.access_via_token"
+                        label-class="width-10"
+                        switch-class="max-width-6">
+                </gf-form-checkbox>
+                <gf-form-switch
+                        ng-if="ctrl.version < 6"
+                        class="gf-form"
+                        label="Access via token"
+                        checked="ctrl.cluster.jsonData.access_via_token"
+                        label-class="width-10"
+                        switch-class="max-width-6">
+                </gf-form-switch>
+            </div>
+            <div class="gf-form-inline" ng-if="ctrl.cluster.jsonData.access_via_token">
+                <div class="gf-form">
+                    <span class="gf-form-label width-10">Token</span>
+
+                    <input type="password" class="gf-form-input width-20" ng-model='ctrl.cluster.secureJsonData.access_token' placeholder="Token"></input>
+
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="gf-form-group">
+            <h3 class="page-heading">Additional</h3>
+
+            <div class="gf-form-inline">
+                <div class="gf-form">
+                    <span class="gf-form-label width-20">Additional Prometheus datasource</span>
+                    <select class="gf-form-input width-10"
+                        ng-model="ctrl.cluster.jsonData.prom_name"
+                        ng-options="prom.name as prom.name for prom in ctrl.prometheusList"
+                    ></select>
+                </div>
+            </div>
+
+            <div class="gf-form-inline">
+                <div class="gf-form">
+                    <span class="gf-form-label width-20">Refresh pods' rate</span>
+                    <select class="gf-form-input width-10"
+                        required
+                        ng-model="ctrl.cluster.jsonData.refresh_pods_rate"
+                    >
+                        <option value="15">15s</option>
+                        <option value="30">30s</option>
+                        <option value="60">1m</option>
+                        <option value="120">2m</option>
+                        <option value="300">5m</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12 gf-form-button-row">
+                <button type="submit" class="btn btn-success" ng-click="ctrl.saveCluster()" ng-disabled="!ctrl.check()">Save & Test</button>
+                <!--<button type="submit" class="btn btn-danger" ng-disabled="!ctrl.cluster.id">Delete</button>-->
+                <button class="btn btn-inverse" onclick="window.history.back()">Back</button>
+            </div>
+        </div>
+    </form>
