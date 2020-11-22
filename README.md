@@ -1,5 +1,7 @@
 # grafana-with-plugins
 
+Grafana with installed DevOpsProdigy KubeGraf (https://github.com/devopsprodigy/kubegraf)
+
 ### Installation
 
 
